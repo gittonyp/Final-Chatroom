@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket.IO Chat</title>
+    <script src="https://cdn.socket.io/4/socket.io.min.js"></script>
+</head>
+<body>
+    <h1>Welcome to the Chat!</h1>
+
+    <div id="login-container">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" placeholder="Enter your username">
+        <button id="login-btn">Login</button>
+    </div>
+
+    <div id="chat-container" style="display: none;">
+        <h2>Chat Room</h2>
+        <ul id="messages"></ul>
+        <form id="chat-form">
+            <input type="text" id="message" name="message" placeholder="Type your message here">
+            <button type="submit">Send</button>
+        </form>
+    </div>
+
+    <script>
+        const socket = io("http://localhost:3010");
+
+        // Login functionality
+        const loginForm = document.getElementById('login-container');
+        const usernameInput = document.getElementById('username');
+        const loginBtn = document.getElementById('login-btn');
+
+        loginBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+            const username = usernameInput.value;
+            if (username) {
+                socket.emit('login', username); // Replace with appropriate event name
+            } else {
+                alert("Please enter a username.");
+            }
+        });
+
+        // Chat functionality
+        const chatContainer = document.getElementById('chat-container');
+        const messagesList = document.getElementById('messages');
+        const chatForm = document.getElementById('chat-form');
+        const messageInput = document.getElementById('message');
+
+        socket.on('login_success', (data) => {
+            if (data.success) {
+                loginForm.style.display = 'none';
+                chatContainer.style.display = 'block';
+                console.log(`Login successful! Welcome, ${data.username}`);
+            } else {
+                console.error("Login failed:", data.error);
+                alert("Login failed. Please try again.");
+            }
+        });
+
+        socket.on('chat message', (msg) => {
+            const newMessage = document.createElement('li');
+            newMessage.textContent = msg;
+            messagesList.appendChild(newMessage);
+            messagesList.scrollTop = messagesList.scrollHeight; // Scroll to the bottom
+        });
+
+        chatForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const message = messageInput.value;
+            if (message) {
+                socket.emit('chat message', message);
+                messageInput.value = ''; // Clear message input
+            }
+        });
+    </script>
+</body>
+</html>

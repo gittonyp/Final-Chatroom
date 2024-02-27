@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join or Create a Room</title>
+    <script src="https://cdn.socket.io/4/socket.io.min.js"></script>
+</head>
+<body>
+    <h1>Welcome, <span id="username"></span>!</h1>
+    <h2>Choose a room to join or create:</h2>
+    <div>
+        <button id="join-existing-room">Join Existing Room</button>
+        <button id="create-new-room">Create New Room</button>
+    </div>
+
+    <script>
+        // Retrieve username securely from localStorage (prevents XSS)
+        const username = localStorage.getItem('username');
+        if (!username) {
+            // Redirect to login if no username is stored
+            window.location.href = "login.html";
+        }
+
+        const socket = io(/* replace with your server's URL here */);
+        const usernameSpan = document.getElementById('username');
+        usernameSpan.textContent = username;
+
+        // Handle join existing room button
+        const joinExistingRoomBtn = document.getElementById('join-existing-room');
+        joinExistingRoomBtn.addEventListener('click', () => {
+            const roomName = prompt("Enter the room name to join:");
+            if (roomName) {
+                socket.emit('join_room', { username, roomName });
+            }
+        });
+
+        // Handle create new room button
+        const createNewRoomBtn = document.getElementById('create-new-room');
+        createNewRoomBtn.addEventListener('click', () => {
+            const roomName = prompt("Enter the room name to create:");
+            if (roomName) {
+                socket.emit('create_room', { username, roomName });
+            }
+        });
+
+        // Example server responses (adapt event names accordingly)
+        socket.on('join_room_success', (data) => {
+            if (data.success) {
+                console.log(`Joined room ${data.roomName}`);
+                // Redirect to room chat interface
+                // You'll need to create a separate HTML file (e.g., "room.html") for this
+                window.location.href = "./room.html?roomName=" + data.roomName;
+            } else {
+                console.error("Failed to join room:", data.error);
+                alert("Failed to join room. Please check the room name and try again.");
+            }
+        });
+
+        socket.on('create_room_success', (data) => {
+            if (data.success) {
+                console.log(`Created room ${data.roomName}`);
+                // Redirect to the newly created room
+                window.location.href = "./room.html?roomName=" + data.roomName;
+            } else {
+                console.error("Failed to create room:", data.error);
+                alert("Failed to create room. Please try again.");
+            }
+        });
+    </script>
+</body>
+</html>
