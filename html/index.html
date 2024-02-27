@@ -15,6 +15,9 @@
       #messages > li { padding: 0.5rem 1rem; }
       #messages > li:nth-child(odd) { background: #efefef; }
     </style>
+    <script>
+      var user=sessionStorage.getItem("username");
+    </script>
   </head>
   <body style="margin-left: 20% ; margin-right: 20%; background-color: rgb(155, 211, 117);" >
     
@@ -38,7 +41,7 @@
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     if (input.value) {
-      socket.emit('chat message', input.value);
+      socket.emit('chat message', user+": "+input.value);
     const item = document.createElement('li');
     item.style.textAlign="right";
     item.textContent = "Me: "+input.value;
@@ -50,10 +53,9 @@
 
   socket.on('chat message', (msg) => {
     console.log("Msg");
-    var user=sessionStorage.getItem(username);
-  console.log(username);
+    
     const item = document.createElement('li');
-    item.textContent = user + ": " +msg;
+    item.textContent = msg;
     messages.appendChild(item);
     window.scrollTo(0, document.body.scrollHeight);
   });
