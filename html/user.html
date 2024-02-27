@@ -40,8 +40,8 @@
 <center>
   <div>
     <h1> Enter Username</h1>
-    <form onsubmit="return check()" action="../html/index.html">
-        <input id="inp" type="text">
+    <form name="myForm" onsubmit="return check()" action="../html/index.html">
+        <input id="inp" type="text" name="fname">
         <br>
         <button type="submit" >Submit</button>
     </form>
@@ -51,10 +51,15 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script>
     function check(){
-    var user=document.getElementById("inp");
-    if(user.textContent==null){
-        return false;
-    }else {return true;}
+    var user=document.forms["myForm"]["fname"].value;;
+    if(user===""){
+      alert("Enter Correct Username")  ;
+      return false;
+
+    }else {
+      sessionStorage.setItem(username, user);
+      return true;
+    }
     }
 </script>
 </body>

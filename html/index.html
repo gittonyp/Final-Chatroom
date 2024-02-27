@@ -28,6 +28,7 @@
     <script src="/socket.io/socket.io.js">
     </script>
 <script>
+  
   const socket = io();
   const form = document.getElementById('form');
   const input = document.getElementById('input');
@@ -49,8 +50,10 @@
 
   socket.on('chat message', (msg) => {
     console.log("Msg");
+    var user=sessionStorage.getItem(username);
+  console.log(username);
     const item = document.createElement('li');
-    item.textContent = msg;
+    item.textContent = user + ": " +msg;
     messages.appendChild(item);
     window.scrollTo(0, document.body.scrollHeight);
   });
