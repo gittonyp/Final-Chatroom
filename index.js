@@ -13,8 +13,20 @@ app.get('/', (req, res) => {
 app.get('/user', (req, res) => {
   res.sendFile(join(__dirname, '/html/user.html'));
 });
-app.get('/html/index.html', (req, res) => {
+app.get('/how', (req, res) => {
+  res.sendFile(join(__dirname, '/html/how.html'));
+});
+app.get('/about', (req, res) => {
+  res.sendFile(join(__dirname, '/html/about.html'));
+});
+app.get('/contact', (req, res) => {
+  res.sendFile(join(__dirname, '/html/contact.html'));
+});
+app.get('/chat', (req, res) => {
   res.sendFile(join(__dirname, '/html/index.html'));
+});
+app.get('/join', (req, res) => {
+  res.sendFile(join(__dirname, '/html/join.html'));
 });
 
 io.on('connection', (socket) => {
