@@ -11,7 +11,7 @@
   "main": "index.js",
   "devDependencies": {},
   "scripts": {
-    "build": "yarn"
+    "build": "yarn && node index.js"
   },
   "author": "",
   "license": "ISC"
