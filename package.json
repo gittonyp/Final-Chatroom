@@ -11,7 +11,7 @@
   "main": "index.js",
   "devDependencies": {},
   "scripts": {
-    "build": "node index.js"
+    "build": "nodemon"
   },
   "author": "",
   "license": "ISC"
