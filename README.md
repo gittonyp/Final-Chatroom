@@ -1,4 +1,4 @@
 **Hi**
 
-This repostiory is a for a Chat App built with basic html,css, javascirpt and Socket.io.
+This repostiory is for Chat App built with basic html,css, javascirpt and Socket.io.
 
